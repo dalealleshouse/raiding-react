@@ -1,0 +1,49 @@
+h1 {
+  text-align: center;
+}
+
+.ttt-board {
+  margin: 50px;
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.ttt-row {
+  background-color: lightblue;
+  margin: auto;
+  width: 300px;
+  display: flex;
+}
+
+.ttt-row:first-child {
+  border-bottom: 3px solid black;
+}
+
+.ttt-row:last-child {
+  border-top: 3px solid black;
+}
+
+.ttt-square {
+  width: 100px;
+  text-align: center;
+  line-height: 100px;
+  cursor: pointer;
+}
+
+.ttt-square:first-child {
+  border-right: 3px solid black;
+}
+
+.ttt-square:last-child {
+  border-left: 3px solid black;
+}
+
+.ttt-info {
+  text-align: center;
+  font-size: xx-large;
+}
+
+.ttt-win {
+  color: green;
+  font-weight: bold;
+}
