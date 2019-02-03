@@ -26,8 +26,14 @@ h1 {
 .ttt-square {
   width: 100px;
   text-align: center;
-  line-height: 100px;
   cursor: pointer;
+  line-height: 100px;
+  min-height: 100px;
+}
+
+.ttt-square > img {
+  display: block;
+  margin: 10px;
 }
 
 .ttt-square:first-child {
@@ -40,7 +46,7 @@ h1 {
 
 .ttt-info {
   text-align: center;
-  font-size: xx-large;
+  font-size: 5em;
 }
 
 .ttt-win {

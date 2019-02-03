@@ -1,20 +1,24 @@
-// Constants
 export const NONE = '-';
 export const DRAW = 'D';
-export const turnValuePrimes = {
+export const emptyBoard = [
+  [NONE, NONE, NONE],
+  [NONE, NONE, NONE],
+  [NONE, NONE, NONE],
+];
+
+const turnValuePrimes = {
   [NONE]: 0,
   X: 3,
   O: 7,
 };
 
-export const X_WIN_TOTAL = turnValuePrimes.X * 3;
-export const O_WIN_TOTAL = turnValuePrimes.O * 3;
+const X_WIN_TOTAL = turnValuePrimes.X * 3;
+const O_WIN_TOTAL = turnValuePrimes.O * 3;
 
-// Helper Functions*************************************************************
-export const mapToPrimes = gameBoard =>
+const mapToPrimes = gameBoard =>
   gameBoard.map(r => r.map(s => turnValuePrimes[s]));
 
-export const flatMapPossibleWins = primes => {
+const flatMapPossibleWins = primes => {
   // row sums
   let sums = primes.map(r => r.reduce((total, current) => total + current));
 
@@ -36,3 +40,14 @@ export const flatMapPossibleWins = primes => {
 
   return sums;
 };
+
+export function score(gameBoard) {
+  const primes = mapToPrimes(gameBoard);
+  const flatPrimes = primes.flatMap(row => row.map(column => column));
+  const possilbeWins = flatMapPossibleWins(primes);
+
+  if (possilbeWins.some(r => r === X_WIN_TOTAL)) return 'X';
+  else if (possilbeWins.some(r => r === O_WIN_TOTAL)) return 'O';
+  else if (flatPrimes.every(m => m !== 0)) return DRAW;
+  else return null;
+}
