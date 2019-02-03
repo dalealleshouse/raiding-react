@@ -1,8 +1,8 @@
 # React State Management
 
 ## Overview
-This tutorial uses a simple "Name That Pirate" game to demonstrate `React` State
-Management principals.
+This tutorial uses a simple Pirate games to demonstrate `React` State Management
+principals.
 
 Objectives:
 - Archetypal UI Architecture
@@ -145,8 +145,19 @@ The JS world is fickle, we shouldn't be...
 > challenge is like telling a musician that there is already a song about love.
 
 ## Experiment and Research
-The best way to understand state management is via example. Start by cloning
-this project with the following command:
+The best way to understand state management is via example. *Do not interpret
+the example apps as canonical implementations*. They represent the minimum
+amount of code required to communicate concepts.
+
+One important note: none of these apps are necessarily better or worse than the
+others. Each has pros and cons. It's helpful to envision a continuum as shown
+below. A responsible engineer will choose the simplest solution that meets their
+*current* needs. Don't try to predict the future, especially in an industry
+defined by constant change.
+
+![continuum](continuum.png)
+
+Start by cloning this project with the following command:
 
 ```bash
 git clone https://github.com/dalealleshouse/rading-react.git
