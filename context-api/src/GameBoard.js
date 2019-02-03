@@ -3,7 +3,7 @@ import pirateData from './pirates.json';
 import PirateImage from './PirateImage';
 import {shuffle, sample, cloneDeep} from 'lodash';
 import Answer from './Answer';
-import PropTypes from 'prop-types';
+import {AppContext} from './AppProvider';
 
 export default class GameBoard extends React.Component {
   constructor(props) {
@@ -26,19 +26,19 @@ export default class GameBoard extends React.Component {
     };
   }
 
-  handleAnswerSelected(pirate) {
+  handleAnswerSelected(pirate, context) {
     if (pirate.name === this.state.turn.pirate.name) {
       this.setState({
         turn: this.buildTurnData(this.state.pirates),
       });
-      this.props.onCorrectAnswer();
+      context.incCorrect();
     } else {
       let turn = this.state.turn;
       turn.possiblities.find(p => p.name === pirate.name).disabled = true;
       this.setState({
         turn: turn,
       });
-      this.props.onIncorrectAnswer();
+      context.incIncorrect();
     }
   }
 
@@ -49,21 +49,20 @@ export default class GameBoard extends React.Component {
           <PirateImage pirate={this.state.turn.pirate} />
         </div>
         <div className="col-6">
-          {this.state.turn.possiblities.map(p => (
-            <Answer
-              key={p.name}
-              pirate={p}
-              onSelected={this.handleAnswerSelected}
-              disabled={p.disabled}
-            />
-          ))}
+          <AppContext.Consumer>
+            {context => {
+              return this.state.turn.possiblities.map(p => (
+                <Answer
+                  key={p.name}
+                  pirate={p}
+                  disabled={p.disabled}
+                  onSelected={p => this.handleAnswerSelected(p, context)}
+                />
+              ));
+            }}
+          </AppContext.Consumer>
         </div>
       </div>
     );
   }
 }
-
-GameBoard.propTypes = {
-  onCorrectAnswer: PropTypes.func.isRequired,
-  onIncorrectAnswer: PropTypes.func.isRequired,
-};

@@ -1,7 +1,7 @@
 # React State Management
 
 ## Overview
-This tutorial uses a simple Pirate games to demonstrate `React` State Management
+This tutorial uses simple Pirate games to demonstrate `React` State Management
 principals.
 
 Objectives:
@@ -237,7 +237,167 @@ examining an example application.
 - Data sharing is only possible via a component Parent/Child relationship
 
 ### React Context API
+This section expands on the previous section by adding `React Context API` to
+the `Name That Pirate` game. 
 
+> #### Exercise 3:
+> 1. Navigate to the `context-api` directory and run the following commands:
+>
+>       ```bash
+>       npm install
+>       npm start
+>       ```
+> 2. Once the app loads, notice that the behavior is identical to previous app
+>
+> 3. Open the `context-api\src\AppProvider.js` file and study it's contents.
+>    This is the only file that was added to the project.
+>
+> 4. Examine the changes made to the  `App.js`, `GameBoard.js`, and `Score.js`
+>    files.
+
+#### Important Concepts
+- `React Context API` allows data to be shared between components that do not
+    have a parent/child relationship.
+    * In the previous app, in order for the `Score` and `GameBoard` to share
+        data, the `App` component had to take responsibility for managing the
+        correct and incorrect counts. This code is shown below.
+
+    ```javascript
+    // state-api App.js
+    ...
+      constructor(props) {
+        ...
+        this.state = {
+          correct: 0,
+          incorrect: 0,
+        };
+        ...
+      }
+
+      handleCorrectAnswer() {
+        this.setState({
+          correct: this.state.correct + 1,
+        });
+      }
+
+      handleIncorrectAnswer() {
+        this.setState({
+          incorrect: this.state.incorrect + 1,
+        });
+      }
+
+      render() {
+      ...
+            <GameBoard
+              onCorrectAnswer={this.handleCorrectAnswer}
+              onIncorrectAnswer={this.handleIncorrectAnswer}
+            />
+            <Score correct={this.state.correct} incorrect={this.state.incorrect} />
+      ...
+      }
+      ...
+    ```
+    * `React Context API` uses a context to share data. The context is created
+        in the component below. This component should be wrapped around any
+        portions of the application that share state
+    ``` javascript
+    // App.js
+    export const AppContext = React.createContext();
+
+    export default class AppProvider extends React.Component {
+      state = {
+        correct: 0,
+        incorrect: 0,
+        incCorrect: () => {
+          this.setState({correct: this.state.correct + 1});
+        },
+        incIncorrect: () => {
+          this.setState({incorrect: this.state.incorrect + 1});
+        },
+      };
+
+      render() {
+        return (
+          <AppContext.Provider value={this.state}>
+            {this.props.children}
+          </AppContext.Provider>
+        );
+      }
+    }
+    ```
+    * The `AppProvider` defined above gets wrapped around `GameBoard` and
+        `Score` so that they can share state.
+
+    ``` javascript
+    // App.js
+    ...
+    <AppProvider>
+      <GameBoard />
+      <Score />
+    </AppProvider>
+    ...
+    ```
+    * The `Score` component uses `AppContext.Consumer` to display state
+        contained in the context.
+
+    ``` javascript
+    // Score.js
+    ...
+    <AppContext.Consumer>
+      {context => context.correct}
+    </AppContext.Consumer>
+    ...
+    ```
+    * The `GameBoard` component uses the functions defined in the context to
+        update state stored in the context.
+
+    ``` javascript
+    // GameBoard.js
+    ...
+    handleAnswerSelected(pirate, context) {
+    ...
+        context.incCorrect();
+    ...
+        context.incIncorrect();
+    ...
+    }
+    ...
+    <AppContext.Consumer>
+      {context => {
+        return this.state.turn.possiblities.map(p => (
+          <Answer
+            key={p.name}
+            pirate={p}
+            disabled={p.disabled}
+            onSelected={p => this.handleAnswerSelected(p, context)}
+          />
+        ));
+      }}
+      ...
+    ```
+
+> #### Exercise 4:
+> 1. Add a button to the App component in the location shown below.
+> ``` html
+>     <AppProvider />
+>       <GameBoard />
+>       <Score />
+>       NEW BUTTON GOES HERE
+>     </AppProvider>
+> ```
+> 2. Add a click handler to the new button that resets the correct and incorrect
+>    counts to 0
+
+#### Pros
+- Simplicity
+- Little to no "magic" - no hidden logic
+- Data sharing is possible without a Parent/Child relationship via context
+
+#### Cons
+- The context can become unwieldy as it grows.
+
+
+# WIP - All text below this point is a work in progress
 ### Build Your Own State Container
 
 ### Redux
