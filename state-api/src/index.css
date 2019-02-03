@@ -1,0 +1,13 @@
+.clickable {
+  cursor: pointer;
+}
+
+.answer {
+  background-color: #f0f7fd;
+  border-color: #d0e3f0;
+  cursor: pointer;
+}
+
+.answer:hover {
+  background-color: #d0e3f0;
+}
