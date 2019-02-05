@@ -77,7 +77,7 @@ At `React`'s inception:
 - Only addressed the *view* portion of the domain
 - Proverbial "Freedom vs. Productivity" Debate
 
-Existing solutions for Model and View:
+Existing solutions for Model and Intent:
 - `React` state management features added ex post facto
     * `Component State API`
     * `Context API`
@@ -378,13 +378,13 @@ the `Name That Pirate` game.
 
 > #### Exercise 4:
 > 1. Add a button to the App component in the location shown below.
-> ``` html
+>   ``` html
 >     <AppProvider />
 >       <GameBoard />
 >       <Score />
 >       NEW BUTTON GOES HERE
 >     </AppProvider>
-> ```
+>   ```
 > 2. Add a click handler to the new button that resets the correct and incorrect
 >    counts to 0
 
@@ -396,9 +396,116 @@ the `Name That Pirate` game.
 #### Cons
 - The context can become unwieldy as it grows.
 
+### Build Your Own State Container
+The next step is to examine `Redux`. However, before diving straight in, it's
+important to understand what `Redux` is trying to accomplish. This section
+demonstrates a simple state container that mimics the core functionality of
+`Redux`. It's curious how little code is required to accomplish this.
+
+> #### Exercise 5:
+> 1. Navigate to the `state-container` directory and run the following commands:
+>
+>   ```bash
+>   npm install
+>   npm start
+>   ```
+> 2. Once the app loads, play the `Pirate Tic Tac Toe game to familiarize
+>    yourself with the app
+>
+> 3. Open the `state-container` folder using your favorite editor (again,
+>    VIM...) and familiarize yourself with the application
+
+#### Important Concepts
+- The core functionality of `Redux` can be reproduced in 13 lines of code.
+    Obviously, `Redux` does much more than this. However, this is the core.
+    * The entire state in the store is held in the `internalState` private
+        variable.
+    * The store accepts a reducer that maps logic to intents. This is the only
+        means of mutating the store's state.
+    * The subscribe method accepts functions that will execute after every
+        dispatch event. This is the typical mechanism by which `Redux` informs
+        `React` that is should re-render the application.
+    * The `getState` method simply returns the application state.
+
+    ``` javascript
+    // Store.js
+    export const createStore = reducer => {
+      let internalState = undefined;
+      let handlers = [];
+
+      return {
+        dispatch: (intent, data) => {
+          internalState = reducer(internalState, intent, data);
+          handlers.forEach(h => h());
+        },
+        subscribe: handler => handlers.push(handler),
+        getState: () => internalState,
+      };
+    };
+    ```
+- The `StateContainer.js` file is where the intents for the Pirate Tic Tac
+    Toe application are defined. Each intent accepts a model and returns a new
+    model. The model itself is never actually mutated, it's replaced with a new
+    model.
+
+    ``` javascript
+    // StateContainer.js
+    const intents = {
+      PLAY: (model, data) => {
+      ...
+      },
+      SCORE: model => {
+      ...
+      },
+    };
+    ```
+
+- The application must instantiate a single global container to be used
+    everywhere within the application.
+
+    ``` javascript
+    // StateContainer.js
+    const update = (model = defaultState, intent, data) => {
+      return intents[intent](model, data);
+    };
+
+    var container = createStore(update);
+    ```
+
+- Intents are joined with end user action in the view.
+
+    ``` javascript
+    // GameSquare.js
+      onClick={() => {
+        StateContainer.dispatch('PLAY', {
+          row: props.row,
+          square: props.square,
+        });
+        StateContainer.dispatch('SCORE');
+      }}>
+    ```
+
+> #### Quiz 3
+> What pattern does the Custom State Container adhere to?
+>   * Observer
+>   * State Machine
+>   * Publisher/Subscriber
+>   * Singleton
+>
+> [Answers](Q3.md)
+
+> #### Exercise 6:
+> 1. Add a new intent to `StateContainer.js` that will reset the game to it's
+>    default state.
+> 2. Add a button to the game that invokes the new intent via the state
+>    container's dispatch method.
+
+There are no pros and cons listed in this section because it's not advisable to
+build a custom state container. This section is meant to merely convey the
+concept about how `React` works under the hood.
+
 
 # WIP - All text below this point is a work in progress
-### Build Your Own State Container
 
 ### Redux
 
@@ -412,12 +519,6 @@ Methods
 - dispatch() - applies an intent to the state
 - subscribe() - registers a callback to be called when the state changes
 
-    > #### Quiz
-    > What pattern does the Custom State Container adhere to?
-    > 1. Observer
-    > 1. State Machine
-    > 1. Publisher/Subscriber
-    > 1. Singleton
 
 ### `Redux`
 

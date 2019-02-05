@@ -1,6 +1,6 @@
 import './index.css';
 import {score, NONE, emptyBoard} from './helpers';
-import createStore from './Store';
+import {createStore} from './Store';
 
 const defaultState = {gameBoard: emptyBoard, player: 'X', winner: null};
 

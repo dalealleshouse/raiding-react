@@ -1,4 +1,4 @@
-const createStore = reducer => {
+export const createStore = reducer => {
   let internalState = undefined;
   let handlers = [];
 
@@ -11,5 +11,3 @@ const createStore = reducer => {
     getState: () => internalState,
   };
 };
-
-export default createStore;
