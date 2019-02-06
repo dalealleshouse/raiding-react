@@ -7,11 +7,11 @@ export default function GameSquare(props) {
     <div
       className="ttt-square"
       onClick={() => {
-        StateContainer.dispatch('PLAY', {
+        StateContainer.dispatch({
+          type: 'PLAY',
           row: props.row,
           square: props.square,
         });
-        StateContainer.dispatch('SCORE');
       }}>
       <PlayerImage player={props.player} />
     </div>

@@ -416,12 +416,13 @@ demonstrates a simple state container that mimics the core functionality of
 >    VIM...) and familiarize yourself with the application
 
 #### Important Concepts
-- The core functionality of `Redux` can be reproduced in 13 lines of code.
-    Obviously, `Redux` does much more than this. However, this is the core.
+- The core functionality of `Redux` can be reproduced in 13 lines of code as
+    demonstrated in the `Store.js` file.
     * The entire state in the store is held in the `internalState` private
         variable.
     * The store accepts a reducer that maps logic to intents. This is the only
-        means of mutating the store's state.
+        means of mutating the store's state. In `Redux` parlance, an intent in
+        an *action*.
     * The subscribe method accepts functions that will execute after every
         dispatch event. This is the typical mechanism by which `Redux` informs
         `React` that is should re-render the application.
@@ -429,13 +430,13 @@ demonstrates a simple state container that mimics the core functionality of
 
     ``` javascript
     // Store.js
-    export const createStore = reducer => {
-      let internalState = undefined;
+    export const createStore = (reducer, defaultState) => {
+      let internalState = defaultState;
       let handlers = [];
 
       return {
-        dispatch: (intent, data) => {
-          internalState = reducer(internalState, intent, data);
+        dispatch: (intent) => {
+          internalState = reducer(internalState, intent);
           handlers.forEach(h => h());
         },
         subscribe: handler => handlers.push(handler),
@@ -451,11 +452,13 @@ demonstrates a simple state container that mimics the core functionality of
     ``` javascript
     // StateContainer.js
     const intents = {
-      PLAY: (model, data) => {
-      ...
+      PLAY: (model, intent) => {
+        ...
+        return {...model, player, winner, gameBoard};
       },
-      SCORE: model => {
-      ...
+      RESET_GAME: model => {
+        ...
+        return {...model, gameBoard: emptyBoard, winner: null};
       },
     };
     ```
@@ -465,11 +468,14 @@ demonstrates a simple state container that mimics the core functionality of
 
     ``` javascript
     // StateContainer.js
-    const update = (model = defaultState, intent, data) => {
-      return intents[intent](model, data);
+    const update = (model, intent) => {
+      let action = intents[intent.type];
+      if (!action) return model;
+
+      return action(model, intent);
     };
 
-    var container = createStore(update);
+    var container = createStore(update, defaultState);
     ```
 
 - Intents are joined with end user action in the view.
@@ -477,12 +483,17 @@ demonstrates a simple state container that mimics the core functionality of
     ``` javascript
     // GameSquare.js
       onClick={() => {
-        StateContainer.dispatch('PLAY', {
+        StateContainer.dispatch({
+          type: 'PLAY',
           row: props.row,
           square: props.square,
         });
-        StateContainer.dispatch('SCORE');
       }}>
+
+    // ResetGame.js
+      <button onClick={() => StateContainer.dispatch({type: 'RESET_GAME'})}>
+        New Game
+      </button>
     ```
 
 > #### Quiz 3
@@ -495,10 +506,14 @@ demonstrates a simple state container that mimics the core functionality of
 > [Answers](Q3.md)
 
 > #### Exercise 6:
-> 1. Add a new intent to `StateContainer.js` that will reset the game to it's
->    default state.
-> 2. Add a button to the game that invokes the new intent via the state
->    container's dispatch method.
+> 1. Convert the state-container application to a `Redux` application viw the
+>       following two steps
+>       * Navigate to the `state-container` directory and run the following
+>           command.
+>       ```bash
+>       npm i --save redux
+>       ```
+
 
 There are no pros and cons listed in this section because it's not advisable to
 build a custom state container. This section is meant to merely convey the

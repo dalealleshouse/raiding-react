@@ -1,10 +1,10 @@
-export const createStore = reducer => {
-  let internalState = undefined;
+export const createStore = (reducer, defaultState) => {
+  let internalState = defaultState;
   let handlers = [];
 
   return {
-    dispatch: (intent, data) => {
-      internalState = reducer(internalState, intent, data);
+    dispatch: (intent) => {
+      internalState = reducer(internalState, intent);
       handlers.forEach(h => h());
     },
     subscribe: handler => handlers.push(handler),

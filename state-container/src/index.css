@@ -3,7 +3,7 @@ h1 {
 }
 
 .ttt-board {
-  margin: 50px;
+  margin: 10px;
   font-size: 40px;
   font-weight: bold;
 }
@@ -52,4 +52,14 @@ h1 {
 .ttt-win {
   color: green;
   font-weight: bold;
+}
+
+.ttt-new-game {
+  text-align: center;
+}
+
+.ttt-new-game > button {
+  font-size: 1.5em;
+  font-weight: bold;
+  background-color: lightblue;
 }
