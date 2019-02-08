@@ -1,0 +1,65 @@
+h1 {
+  text-align: center;
+}
+
+.ttt-board {
+  margin: 10px;
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.ttt-row {
+  background-color: lightblue;
+  margin: auto;
+  width: 300px;
+  display: flex;
+}
+
+.ttt-row:first-child {
+  border-bottom: 3px solid black;
+}
+
+.ttt-row:last-child {
+  border-top: 3px solid black;
+}
+
+.ttt-square {
+  width: 100px;
+  text-align: center;
+  cursor: pointer;
+  line-height: 100px;
+  min-height: 100px;
+}
+
+.ttt-square > img {
+  display: block;
+  margin: 10px;
+}
+
+.ttt-square:first-child {
+  border-right: 3px solid black;
+}
+
+.ttt-square:last-child {
+  border-left: 3px solid black;
+}
+
+.ttt-info {
+  text-align: center;
+  font-size: 5em;
+}
+
+.ttt-win {
+  color: green;
+  font-weight: bold;
+}
+
+.ttt-new-game {
+  text-align: center;
+}
+
+.ttt-new-game > button {
+  font-size: 1.5em;
+  font-weight: bold;
+  background-color: lightblue;
+}

@@ -506,33 +506,47 @@ demonstrates a simple state container that mimics the core functionality of
 > [Answers](Q3.md)
 
 > #### Exercise 6:
-> 1. Convert the state-container application to a `Redux` application viw the
+> 1. Convert the state-container application to a `Redux` application via the:
 >       following two steps
 >       * Navigate to the `state-container` directory and run the following
 >           command.
 >       ```bash
 >       npm i --save redux
 >       ```
-
+>       * Change the import at the top of the 'StateContainer.js` file.
+>       ```javascript
+>       // this line
+>       import {createStore} from './Store';
+>       // become this line
+>       import {createStore} from 'redux';
+>       ```
+> 2. Run the application and marvel at your genius.
 
 There are no pros and cons listed in this section because it's not advisable to
 build a custom state container. This section is meant to merely convey the
 concept about how `React` works under the hood.
 
+### React-Redux
+As demonstrated in the previous section, `Redux` on its own is fairly simple.
+Unfortunately, the complexity level swells as the number of reducers and actions
+increase. `React-Redux` is a package that attempts to assuage the complexity.
+The trade off is that many mechanisms become opaque making it especially
+difficult for uninitiated developers to navigate. It's highly recommended that
+developers have a good grasp on `React` and `Redux` before trying to use
+`React-Redux`.
+
+The main service provided by `React-Redux` is to connect components to the
+application state.
+
+- provider
+- connect
+  - mapStateToProps
+  - mapDispatchToProps
+
 
 # WIP - All text below this point is a work in progress
 
-### Redux
-
 ### Unstated
-
-Abstraction on top of Model-View-Intent that encapsulates the model and update
-components.
-
-Methods
-- getState() - returns application state
-- dispatch() - applies an intent to the state
-- subscribe() - registers a callback to be called when the state changes
 
 
 ### `Redux`
