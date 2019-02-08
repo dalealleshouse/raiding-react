@@ -8,7 +8,13 @@ import {createStore} from 'redux';
 import './index.css';
 
 const defaultState = {
-  gameState: {gameBoard: emptyBoard, player: 'X', winner: null},
+  gameState: {
+    gameBoard: emptyBoard,
+    player: 'X',
+    winner: null,
+    xWins: 0,
+    oWins: 0,
+  },
 };
 
 ReactDOM.render(

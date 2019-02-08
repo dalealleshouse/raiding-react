@@ -5,6 +5,7 @@ import ResetGame from './ResetGame';
 import {connect} from 'react-redux';
 import resetGame from './actions/ResetGame';
 import takeTurn from './actions/TakeTurn';
+import GameScore from './GameScore';
 import './index.css';
 
 function mapStateToProps(state) {
@@ -22,16 +23,21 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-const PirateTicTacToe = connect(
+function PirateTicTacToe(props) {
+  return (
+    <div>
+      <h1>Pirate Tic Tac Toe</h1>
+      <GameInfo player={props.player} winner={props.winner} />
+      {props.winner && <ResetGame onResetGame={props.onResetGame} />}
+      <GameBoard gameBoard={props.gameBoard} onPlay={props.onPlay} />
+      <GameScore />
+    </div>
+  );
+}
+
+const ConnectedPirateTicTacToe = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(props => (
-  <div>
-    <h1>Pirate Tic Tac Toe</h1>
-    <GameBoard gameBoard={props.gameBoard} onPlay={props.onPlay} />
-    <GameInfo player={props.player} winner={props.winner} />
-    {props.winner && <ResetGame onResetGame={props.onResetGame} />}
-  </div>
-));
+)(PirateTicTacToe);
 
-export default PirateTicTacToe;
+export default ConnectedPirateTicTacToe;

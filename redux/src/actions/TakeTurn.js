@@ -1,6 +1,6 @@
 import {TAKE_TURN} from './ActionTypes';
 
-export default function resetGameActionCreator(row, square) {
+export default function takeTurnActionCreator(row, square) {
   return {
     type: TAKE_TURN,
     row: row,

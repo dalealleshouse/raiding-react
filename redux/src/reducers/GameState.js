@@ -1,7 +1,13 @@
 import {NONE, score, emptyBoard} from '../helpers';
 import {TAKE_TURN, RESET_GAME} from '../actions/ActionTypes';
 
-const defaultState = {gameBoard: emptyBoard, winner: null, player: 'X'};
+const defaultState = {
+  gameBoard: emptyBoard,
+  winner: null,
+  player: 'X',
+  xWins: 0,
+  oWins: 0,
+};
 
 export default function gameState(state = defaultState, action) {
   switch (action.type) {
@@ -15,8 +21,10 @@ export default function gameState(state = defaultState, action) {
 
       const player = state.player === 'X' ? 'O' : 'X';
       const winner = score(gameBoard);
+      const xWins = winner === 'X' ? state.xWins + 1 : state.xWins;
+      const oWins = winner === 'O' ? state.oWins + 1 : state.oWins;
 
-      return {...state, player, winner, gameBoard};
+      return {...state, player, winner, gameBoard, xWins: xWins, oWins: oWins};
     case RESET_GAME:
       return {...state, gameBoard: emptyBoard, winner: null};
     default:

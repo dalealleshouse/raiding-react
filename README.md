@@ -535,42 +535,177 @@ difficult for uninitiated developers to navigate. It's highly recommended that
 developers have a good grasp on `React` and `Redux` before trying to use
 `React-Redux`.
 
-The main service provided by `React-Redux` is to connect components to the
-application state.
+> #### Exercise 7:
+> 1. Open the `redux` folder using your favorite editor (hopefully, by now
+>    you're using VIM...) and familiarize yourself with the application. Notice
+>    that the app is an improved version of the `Pirate Tic Tac Toe` app with
+>    `React-Redux` implemented.
 
-- provider
-- connect
-  - mapStateToProps
-  - mapDispatchToProps
+Important Concepts:
+- `React-Redux` provides a `Provider` object that must be wrapped around the top
+    level component of the application. The provider accepts a state container
+    as a property. This is oddly reminiscent of `Component State API`.
 
+    ``` javascript
+    // index.js
+    ReactDOM.render(
+      <Provider store={createStore(reducer, defaultState)}>
+        <PirateTicTacToe />
+      </Provider>,
+      document.getElementById('root'),
+    );
+    ```
 
-# WIP - All text below this point is a work in progress
+- `React-Redux` handles the render subscription implicitly. There is no longer a
+    need to create a render function and pass it to the `Redux` container's
+    subscribe method.
 
-### Unstated
+- Actions (AKA intents) are generated via special action creator functions that
+    do nothing but create action objects to be passed to the `Redux` container's
+    dispatch method.
 
+    ``` javascript
+    // actions/ActionTypes.js
+    export const TAKE_TURN = 'TAKE_TURN';
+    export const RESET_GAME = 'RESET_GAME';
 
-### `Redux`
+    // actions/ResetGame.js
+    export default function resetGameActionCreator() {
+      return {
+        type: RESET_GAME,
+      };
+    }
 
+    // actions/TakeTurn.js
+    export default function takeTurnActionCreator(row, square) {
+      return {
+        type: TAKE_TURN,
+        row: row,
+        square: square,
+      };
+    }
+    ```
+
+- The reducer looks largely the same as it did before. However, in a large
+    application, you can expect that there will be many reducers split across
+    many files. This is why it was moved to a reducers folder. Remember never to
+    mutate the state directly. Always return a new object.
+    ``` javascript
+    // reducers/GameState.js
+    export default function gameState(state = defaultState, action) {
+      switch (action.type) {
+        case TAKE_TURN:
+        ...
+          return {...state, player, winner, gameBoard};
+        case RESET_GAME:
+          return {...state, gameBoard: emptyBoard, winner: null};
+        default:
+          return state;
+      }
+    }
+    ```
+
+- All the reducers in an application are combined together using
+    `React-Redux`'s `combineReducers` function. This app only has a single
+    reducer; however, typically there are more. Each reducer passed to
+    `combineReducer` manages a slice of the overall application state.
+
+    ```javascript
+    // reducers/index.js
+    import gameState from './GameState';
+
+    export default combineReducers({
+      gameState,
+    });
+    ```
+
+- The main service provided by `React-Redux` is to automatically connect
+    components to the application state. This is done with two functions:
+    `mapStateToProps` and `mapDispatchToProps`. `React-Redux`'s `connect`
+    function accepts the two functions and returns another function that accepts
+    a component and returns a connected component. Anytime the application state
+    changes, `React-Redux` automatically maps the new state to the props of
+    connected components and re-render that component. The `mapStateToDispatch`
+    functions is how actions are mapped to props.
+
+    ``` javascript
+    // PirateTicTacToe.js
+    function mapStateToProps(state) {
+      return {
+        gameBoard: state.gameState.gameBoard,
+        player: state.gameState.player,
+        winner: state.gameState.winner,
+      };
+    }
+
+    function mapDispatchToProps(dispatch) {
+      return {
+        onResetGame: () => dispatch(resetGame()),
+        onPlay: (row, square) => dispatch(takeTurn(row, square)),
+      };
+    }
+
+    function PirateTicTacToe(props) {
+      return (
+        <div>
+          <h1>Pirate Tic Tac Toe</h1>
+          <GameInfo player={props.player} winner={props.winner} />
+          {props.winner && <ResetGame onResetGame={props.onResetGame} />}
+          <GameBoard gameBoard={props.gameBoard} onPlay={props.onPlay} />
+          <GameScore />
+        </div>
+      );
+    }
+
+    const ConnectedPirateTicTacToe = connect(
+      mapStateToProps,
+      mapDispatchToProps,
+    )(PirateTicTacToe);
+    ```
+
+> #### Exercise 8:
+> 1. Add a new 'RESET_SCORE' action type to `actions/ActionTypes.js`
+>
+> 2. Add a new action creator to the action folder that generate an action with
+>    the type 'RESET_SCORE'. Use the  `actions/ResetGame.js` file as a template.
+>
+> 3. Update the `gameState` reducer to handle the `RESET_SCORE` action. It
+>    should set `xWins` and `oWins` both to 0.
+>
+> 4. Add a button to the `GameScore` components that dispatches the
+>    `RESET_SCORE` action. Note that this will require a `mapDispatchToProps`
+>    function. Use the `PirateTicTacToe` component as a template.
+>
+> 5. Spend many blissful hours playing `Pirate Tic Tac Toe`.
+
+#### Pros
 - Useful when you have multiple components that need to share state that do not
     have a parent child relationship
+- Provides a means of logically organizing actions, reducers, and components
+    that encourages reuse. The division of code makes logical sense providing
+    the developer has a firm grasp on the inner workings of `React-Redux`.
+- `React-Redux` provides some impressive benefits that are even touched on here.
+    * Easily persist state to local storage
+    * Pre-fill state from the server
+    * Create snap-shots of state
+    * Maintain undo history
+    * Time Travel
 
+#### Cons
+- Complexity
+- Opacity
+- `React-Redux` encourages developers to split actions, reducers, and components
+    across many different files which can make it difficult to comprehend the
+    flow of a application.
 - "...if you aren't sure if you need [Redux], you don't need it" - Pete Hunt
+- Cory House provides some common `Redux` anti-patterns. He in fact mentioned
+    that it is a "mistake" to use `Redux` by default.
+    * People connect *every* component
+    * People embed `Redux` in "reusable" components
+    * Everyone uses `Redux`, even when they don't need it
+    * People don't know how to build an app with just `React`
 
-- When you choose redux to solve the prop-drilling problem, you're bringing in a
-    cost that is intended to solve problems you don’t have and hence the cost is
-    greater than the benefit.
-
-Cory House
-Putting `Redux` in our company framework by default was a mistake.
-- People connect *every* component
-- People embed `Redux` in "reusable" components
-- Everyone uses `Redux`, even when they don't need it
-- People don't know how to build an app with just `React`
-
-    Intended to make flux more palatable 
-
-    Provides a degree of standardization
-    Opaque
+### Unstated
 
 ---
 Bibliography
@@ -588,3 +723,5 @@ piece of work:
     https://app.pluralsight.com/library/courses/react-fundamentals-update/table-of-contents
 - Daniel Schulz -
     https://medium.com/dailyjs/comparison-of-state-management-solutions-for-react-2161a0b4af7b
+- Cory House -
+    https://twitter.com/housecor/status/962754389533429760?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E962754389533429760&ref_url=https%3A%2F%2Fblog.kentcdodds.com%2Fmedia%2F1e51deeba20cd3ed41a39eaacc3b05ba%3FpostId%3D66de608ccb24%26gi%3D8ea5a508b458
