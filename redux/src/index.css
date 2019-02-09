@@ -1,7 +1,3 @@
-h1 {
-  text-align: center;
-}
-
 .ttt-board {
   margin: 10px;
   font-size: 40px;
@@ -58,28 +54,19 @@ h1 {
   text-align: center;
 }
 
-.ttt-new-game > button {
-  font-size: 1.5em;
-  font-weight: bold;
-  background-color: lightblue;
-}
-
 .ttt-running-score {
-  text-align: center;
   font-size: 1.5em;
 }
 
 .ttt-running-score > span {
   display: inline-block;
   border: solid;
-  margin-top: 10px;
-  padding: 5px;
 }
 
 .ttt-running-score > span > img:last-child {
   margin-left: 20px;
 }
 
-img {
-  vertical-align: middle;
+.ttt-reset-game {
+  min-height: 100px;
 }

@@ -25,12 +25,26 @@ function mapDispatchToProps(dispatch) {
 
 function PirateTicTacToe(props) {
   return (
-    <div>
-      <h1>Pirate Tic Tac Toe</h1>
-      <GameInfo player={props.player} winner={props.winner} />
-      {props.winner && <ResetGame onResetGame={props.onResetGame} />}
-      <GameBoard gameBoard={props.gameBoard} onPlay={props.onPlay} />
-      <GameScore />
+    <div className="container-fluid">
+      <div className="row">
+        <div className="jumbotron col-10 offset-1">
+          <h1>Pirate Tic Tac Toe</h1>
+          <hr className="my-4" />
+          <p>
+            Click on a Tic Tac Toe square to claim it for the current player.
+          </p>
+        </div>
+      </div>
+      <div className="row align-items-center">
+        <div className="col-md-5 col-sm-10 offset-md-1 offset-sm-1">
+          <GameInfo player={props.player} winner={props.winner} />
+          <GameBoard gameBoard={props.gameBoard} onPlay={props.onPlay} />
+        </div>
+        <div className="col-md-5 col-sm-10 offset-md-0 offset-sm-1 align-items-center text-center">
+          <GameScore />
+          <ResetGame onResetGame={props.onResetGame} winner={props.winner} />
+        </div>
+      </div>
     </div>
   );
 }

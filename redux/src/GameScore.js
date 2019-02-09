@@ -5,8 +5,8 @@ import {connect} from 'react-redux';
 function GameScore(props) {
   return (
     <div className="ttt-running-score">
-      <div>Running Score:</div>
-      <span>
+      <h3>Running Score:</h3>
+      <span className="p-3">
         <PlayerImage player="X" /> {props.xWins}
         <PlayerImage player="O" /> {props.oWins}
       </span>
