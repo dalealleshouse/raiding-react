@@ -5,7 +5,7 @@ import StateContainer from './StateContainer';
 function getMessage(gameState) {
   switch (gameState) {
     case 'won':
-      return "Alright then ye Landlubber, Yer Saved from the Plank. This Time...";
+      return 'Alright then ye Landlubber, Yer Saved from the Plank. This Time...';
     case 'lost':
       return 'Arrrr Matey, Enjoy Yer Swim!';
     default:
