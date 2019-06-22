@@ -31,7 +31,7 @@ function getImage(variable: GameVar) {
 const Pirate: React.FC<PirateProps> = props => {
   return (
     <div className="game-square pirate">
-      <img src={getImage(props.variable)} />
+      <img src={getImage(props.variable)} alt={props.variable} />
     </div>
   );
 };

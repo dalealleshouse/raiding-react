@@ -8,7 +8,7 @@ interface SumProps {
 const Sum: React.FC<SumProps> = props => {
   return props.sum > 0 ? (
     <div className="game-square sum">
-      <img src={booty} />
+      <img src={booty} alt={props.sum.toString()} />
       <div className="text">{props.sum}</div>
     </div>
   ) : (

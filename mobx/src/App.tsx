@@ -1,16 +1,8 @@
 import React from 'react';
 import './App.css';
-import algebraPuzzle, {GameSize} from './algebraPuzzle';
-import appState from './appState';
-import Pirate from './Pirate';
-import Sum from './Sum';
 import GameBoard from './GameBoard';
-import Answers from './Answers';
-
-function updatePirates(event: React.FormEvent<HTMLSelectElement>) {
-  appState.setNumberOfPirates(parseInt(event.currentTarget.value) as GameSize);
-  console.log(appState.puzzle.gameBoard);
-}
+import AnswerBoard from './AnswerBoard';
+import GameSizeSelector from './GameSizeSelector';
 
 const App: React.FC = () => {
   return (
@@ -28,20 +20,13 @@ const App: React.FC = () => {
       </div>
       <div className="row align-items-center">
         <div className="col-11 offset-1 align-items-center text-center">
-          <label htmlFor="numberOfPiratesDropDown" className="mr-3">
-            Number of Pirates
-          </label>
-          <select id="numberOfPiratesDropDown" onChange={updatePirates}>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-          </select>
+          <GameSizeSelector />
           <GameBoard />
         </div>
       </div>
       <div className="row align-items-center">
         <div className="col-11 offset-1 align-items-center text-center">
-          <Answers />
+          <AnswerBoard />
         </div>
       </div>
     </div>

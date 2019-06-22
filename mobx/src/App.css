@@ -3,6 +3,7 @@
 }
 
 .answer-board {
+  white-space: nowrap;
   margin-top: 20px;
 }
 
@@ -13,8 +14,9 @@
 }
 
 .game-square {
+  padding: 5px;
   display: inline-block;
-  width: 100px;
+  width: 115px;
   white-space: normal;
 }
 

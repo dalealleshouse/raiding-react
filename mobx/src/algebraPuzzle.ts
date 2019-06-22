@@ -3,7 +3,7 @@ import deepFreeze, {DeepReadonly} from 'deep-freeze';
 const CHAR_CODE_A = 65;
 export type GameVar = 'A' | 'B' | 'C' | 'D' | 'E' | 'F';
 export type GameSize = 3 | 4 | 5 | 6;
-type GameVarMap = {[key: string]: number};
+export type GameVarMap = {[key: string]: number};
 type GameBoard = Array<Array<GameVar>>;
 
 type RowColumnSums = {
