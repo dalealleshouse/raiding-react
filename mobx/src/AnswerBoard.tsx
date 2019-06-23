@@ -39,9 +39,15 @@ export default class AnswerBoard extends React.Component<AppStoreProps> {
           </div>
         )}
         {store.puzzleState === PuzzleState.INCORRECT_ANSWERS && (
-          <div>Try again! </div>
+          <div className="h1 text-danger">
+            Hornswaggle, says I! Try again landlubber.
+          </div>
         )}
-        {store.puzzleState === PuzzleState.SOLVED && <div>YOU WIN! </div>}
+        {store.puzzleState === PuzzleState.SOLVED && (
+          <div className="h1 text-success">
+            Yo Ho Ho! This division of booty be acceptable.
+          </div>
+        )}
       </div>
     );
   }
