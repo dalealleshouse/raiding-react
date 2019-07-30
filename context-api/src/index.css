@@ -11,3 +11,9 @@
 .answer:hover {
   background-color: #d0e3f0;
 }
+
+.reset-button {
+  float: right;
+  height: 88%;
+  width: 150px;
+}

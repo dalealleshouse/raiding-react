@@ -25,6 +25,14 @@ export default function Score(props) {
             </span>
           </span>
         </h3>
+        <AppContext.Consumer>
+        {context => <button
+          onClick={context.reset}
+          className={'reset-button'}
+          >Reset
+          </button>
+        }
+        </AppContext.Consumer>
       </div>
     </div>
   );

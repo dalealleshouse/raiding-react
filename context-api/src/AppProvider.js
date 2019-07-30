@@ -12,6 +12,9 @@ export default class AppProvider extends React.Component {
     incIncorrect: () => {
       this.setState({incorrect: this.state.incorrect + 1});
     },
+    reset: () => {
+      this.setState({correct: 0, incorrect: 0});
+    }
   };
 
   render() {

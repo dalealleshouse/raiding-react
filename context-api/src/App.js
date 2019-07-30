@@ -4,14 +4,7 @@ import GameBoard from './GameBoard';
 import Score from './Score';
 
 export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      correct: 0,
-      incorrect: 0,
-    };
-  }
+  state: {};
 
   render() {
     return (
