@@ -9,7 +9,7 @@ const App: React.FC = () => {
     <div className="container-fluid">
       <div className="row">
         <div className="jumbotron col-10 offset-1">
-          <h1>Divide the Booty</h1>
+          <h1>Divide the Treasure</h1>
           <hr className="my-4" />
           <p>
             Help the pirates divide up their plundered doubloons. Each row and
