@@ -16,3 +16,5 @@ Set the following enviornment variable
 ``` bash
 export NODE_OPTIONS=--openssl-legacy-provider
 ``
+
+More Information: https://github.com/webpack/webpack/issues/14532
